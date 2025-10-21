@@ -1,8 +1,11 @@
+
 import streamlit as st
 from streamlit.components.v1 import html
 
+# --- Page Config ---
 st.set_page_config(page_title="Sagar Sofa's", page_icon="🛋️", layout="wide")
 
+# --- Include External CSS/JS ---
 st.markdown("""
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -173,24 +176,10 @@ body {
     .footer { font-size: 0.8em; padding: 30px; }
 }
 </style>
-
-<script>
-AOS.init({ duration: 1000, once: true });
-
-window.addEventListener('scroll', function() {
-  const navbar = document.querySelector('.navbar');
-  if(window.scrollY > 50) { navbar.classList.add('scrolled'); }
-  else { navbar.classList.remove('scrolled'); }
-});
-
-function toggleMenu() {
-  const menu = document.querySelector('.mobile-menu');
-  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-}
-</script>
 """, unsafe_allow_html=True)
 
-st.markdown("""
+# --- Navbar + Mobile Menu ---
+html("""
 <div class="navbar">
   <h1>🛋️ Sagar Sofa's</h1>
   <div class="nav-links">
@@ -210,8 +199,24 @@ st.markdown("""
   <a href="#about" onclick="toggleMenu()">About</a>
   <a href="#contact" onclick="toggleMenu()">Contact</a>
 </div>
-""", unsafe_allow_html=True)
 
+<script>
+AOS.init({ duration: 1000, once: true });
+
+window.addEventListener('scroll', function() {
+  const navbar = document.querySelector('.navbar');
+  if(window.scrollY > 50) { navbar.classList.add('scrolled'); }
+  else { navbar.classList.remove('scrolled'); }
+});
+
+function toggleMenu() {
+  const menu = document.querySelector('.mobile-menu');
+  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+}
+</script>
+""")
+
+# --- Hero Section ---
 st.markdown("""
 <div id="home" class='hero' data-aos="zoom-in">
   <h1>Elegant Furniture for Modern Living</h1>
@@ -219,27 +224,31 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("<div id='collections' class='section'><h2 data-aos='fade-up'>🌟 Featured Collections</h2></div>", unsafe_allow_html=True)
+# --- Collections Section ---
 st.markdown("""
-<div class="section grid">
-  <div class="card" data-aos="fade-right">
-    <img src="https://images.unsplash.com/photo-1616627986744-8ad597d07c96" alt="Minimalist Sofa"/>
-    <h3>Minimalist Comfort</h3>
-    <p>Soft, stylish, and sustainable.</p>
-  </div>
-  <div class="card" data-aos="fade-up">
-    <img src="https://images.unsplash.com/photo-1598300056226-0f8c9e99d8cc" alt="Modern Chair"/>
-    <h3>Scandinavian Charm</h3>
-    <p>Designed for relaxation and elegance.</p>
-  </div>
-  <div class="card" data-aos="fade-left">
-    <img src="https://images.unsplash.com/photo-1598300007898-0f8c9e44d8cc" alt="Wood Table"/>
-    <h3>Natural Finish</h3>
-    <p>Premium quality handcrafted wood.</p>
+<div id='collections' class='section'>
+  <h2 data-aos='fade-up'>🌟 Featured Collections</h2>
+  <div class="grid">
+    <div class="card" data-aos="fade-right">
+      <img src="https://images.unsplash.com/photo-1616627986744-8ad597d07c96" alt="Minimalist Sofa"/>
+      <h3>Minimalist Comfort</h3>
+      <p>Soft, stylish, and sustainable.</p>
+    </div>
+    <div class="card" data-aos="fade-up">
+      <img src="https://images.unsplash.com/photo-1598300056226-0f8c9e99d8cc" alt="Modern Chair"/>
+      <h3>Scandinavian Charm</h3>
+      <p>Designed for relaxation and elegance.</p>
+    </div>
+    <div class="card" data-aos="fade-left">
+      <img src="https://images.unsplash.com/photo-1598300007898-0f8c9e44d8cc" alt="Wood Table"/>
+      <h3>Natural Finish</h3>
+      <p>Premium quality handcrafted wood.</p>
+    </div>
   </div>
 </div>
 """, unsafe_allow_html=True)
 
+# --- About Section ---
 st.markdown("""
 <div id='about' class='section' data-aos="fade-up">
   <h2>About Us</h2>
@@ -247,17 +256,20 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+# --- Parallax Section ---
 html("""
 <div class="parallax" 
      style="background-image:url('https://images.unsplash.com/photo-1615874959474-d609969a20ed');">
 </div>
 """)
 
+# --- Contact Section ---
 st.markdown("""
 <div id='contact' class='section' data-aos="zoom-in-up">
   <h2>Contact Us</h2>
-  <p>📧 sb76@gmaio.com<br>📞 +91 9885916770</p>
+  <p>📧 sb76@gmail.com<br>📞 +91 9885916770</p>
 </div>
 """, unsafe_allow_html=True)
 
+# --- Footer ---
 st.markdown("<div class='footer'>© 2025 | Sagar Sofa's — Crafted with ❤️</div>", unsafe_allow_html=True)

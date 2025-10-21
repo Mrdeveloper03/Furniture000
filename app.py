@@ -61,7 +61,7 @@ img:hover {
 # --- Hero Section ---
 st.markdown("""
 <div class='hero'>
-  <h1>🛋️ Modern Furniture Studio</h1>
+  <h1>🛋️ Sagar Sofa's </h1>
   <p>Elevate your space with elegant, sustainable furniture designed for modern living.</p>
 </div>
 """, unsafe_allow_html=True)
@@ -105,4 +105,4 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- Footer ---
-st.markdown("<div class='footer'>© 2025 Sagar Sofa's | Designed with ❤️ using Streamlit</div>", unsafe_allow_html=True)
+st.markdown("<div class='footer'>© 2025 | Sagar Sofa's</div>", unsafe_allow_html=True)

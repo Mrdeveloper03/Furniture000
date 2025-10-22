@@ -1,9 +1,10 @@
+
 import streamlit as st
 from streamlit.components.v1 import html
 
-st.set_page_config(page_title="Sagar Sofa's 3D", page_icon="🛋️", layout="wide")
+st.set_page_config(page_title="Sagar Sofa's 3D Showroom", page_icon="🛋️", layout="wide")
 
-full_page_interactive_3d = """
+full_page_3d_scroll = """
 <!doctype html>
 <html lang="en">
 <head>
@@ -26,6 +27,7 @@ body {
     padding: 0;
     scroll-behavior: smooth;
     perspective: 1500px;
+    overflow-x: hidden;
 }
 
 /* Navbar */
@@ -74,6 +76,16 @@ body {
 /* Sections */
 .section { padding: 70px 20px; text-align: center; max-width: 1200px; margin: auto; }
 .section h2 { font-size: 1.8rem; color: var(--text-color); margin-bottom: 25px; }
+
+/* Parallax 3D Background Sections */
+.parallax {
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    border-radius: 12px;
+    margin: 80px 0;
+    transform-style: preserve-3d;
+}
 
 /* 3D Grid Cards */
 .grid {
@@ -144,22 +156,24 @@ main { padding-bottom: 60px; }
   <img src="https://images.unsplash.com/photo-1616627986744-8ad597d07c96?w=1200&auto=format&fit=crop&q=80" alt="Minimalist Sofa"/>
   <h3>Minimalist Comfort</h3>
   <p>Soft, stylish, and sustainable.</p>
-  <button onclick="window.open('https://wa.me/919494828592?text=Hi%20I%20would%20like%20to%20get%20a%20quote%20for%20Minimalist%20Comfort','_blank')">Get Quote</button>
+  <button onclick="window.open('https://wa.me/919494828592?text=Hi','_blank')">Get Quote</button>
 </div>
 <div class="card" data-aos="zoom-in-up">
   <img src="https://images.unsplash.com/photo-1598300056226-0f8c9e99d8cc?w=1200&auto=format&fit=crop&q=80" alt="Modern Chair"/>
   <h3>Scandinavian Charm</h3>
   <p>Designed for relaxation and elegance.</p>
-  <button onclick="window.open('https://wa.me/919494828592?text=Hi%20I%20would%20like%20to%20get%20a%20quote%20for%20Scandinavian%20Charm','_blank')">Get Quote</button>
+  <button onclick="window.open('https://wa.me/919494828592?text=Hi','_blank')">Get Quote</button>
 </div>
 <div class="card" data-aos="fade-left">
   <img src="https://images.unsplash.com/photo-1598300007898-0f8c9e44d8cc?w=1200&auto=format&fit=crop&q=80" alt="Wood Table"/>
   <h3>Natural Finish</h3>
   <p>Premium quality handcrafted wood.</p>
-  <button onclick="window.open('https://wa.me/919494828592?text=Hi%20I%20would%20like%20to%20get%20a%20quote%20for%20Natural%20Finish','_blank')">Get Quote</button>
+  <button onclick="window.open('https://wa.me/919494828592?text=Hi','_blank')">Get Quote</button>
 </div>
 </div>
 </section>
+
+<section class="parallax" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&auto=format&fit=crop&q=80');"></section>
 
 <section id="reviews" class="section" data-aos="fade-up">
 <h2>What Our Customers Say</h2>
@@ -167,6 +181,8 @@ main { padding-bottom: 60px; }
 <p>“Comfortable sofas, worth every penny.” — Rajesh M.</p>
 <p>“Sagar Sofa's transformed my living room.” — Priya S.</p>
 </section>
+
+<section class="parallax" style="background-image:url('https://images.unsplash.com/photo-1598300007898-0f8c9e44d8cc?w=1200&auto=format&fit=crop&q=80');"></section>
 
 <section id="contact" class="section" data-aos="fade-up">
 <h2>Contact Us</h2>
@@ -182,55 +198,4 @@ document.addEventListener('DOMContentLoaded', function() {
   if (window.AOS) AOS.init({duration: 1200, easing:'ease-in-out', once:true, mirror:false});
   
   const hamburger = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('mobileMenu');
-  hamburger.addEventListener('click', ()=>{ 
-      const isShown = mobileMenu.style.display==='flex';
-      mobileMenu.style.display=isShown?'none':'flex';
-      mobileMenu.setAttribute('aria-hidden',String(isShown)); 
-  });
-  mobileMenu.querySelectorAll('a').forEach(a=>{
-      a.addEventListener('click',()=>{mobileMenu.style.display='none';});
-  });
-  
-  window.addEventListener('scroll',()=>{
-      const navbar=document.getElementById('navbar');
-      if(window.scrollY>50) navbar.classList.add('scrolled');
-      else navbar.classList.remove('scrolled');
-  });
-
-  // Offset for hash links
-  function offsetAnchor(){ if(location.hash.length>0) window.scrollTo(window.scrollX, window.scrollY-70);}
-  window.addEventListener("hashchange",offsetAnchor);
-  window.setTimeout(offsetAnchor,1);
-
-  // Interactive 3D effect for hero
-  const hero = document.querySelector('.hero');
-  hero.addEventListener('mousemove', e=>{
-      const x = (window.innerWidth/2 - e.pageX)/25;
-      const y = (window.innerHeight/2 - e.pageY)/25;
-      hero.style.transform = `rotateY(${x}deg) rotateX(${y}deg) scale(1.03)`;
-  });
-  hero.addEventListener('mouseleave', ()=>{
-      hero.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
-  });
-
-  // 3D effect for cards
-  const cards = document.querySelectorAll('.card');
-  cards.forEach(card=>{
-      card.addEventListener('mousemove', e=>{
-          const rect = card.getBoundingClientRect();
-          const x = (rect.width/2 - (e.clientX - rect.left))/15;
-          const y = (rect.height/2 - (e.clientY - rect.top))/15;
-          card.style.transform = `rotateY(${x}deg) rotateX(${y}deg) scale(1.05)`;
-      });
-      card.addEventListener('mouseleave', ()=>{
-          card.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
-      });
-  });
-});
-</script>
-</body>
-</html>
-"""
-
-html(full_page_interactive_3d, height=1800, scrolling=True)
+  const mobileMenu =

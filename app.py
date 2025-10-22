@@ -3,7 +3,7 @@ from streamlit.components.v1 import html
 import os
 
 # --- Page Config ---
-st.set_page_config(page_title="Sagar Sofa's 3D Showroom", page_icon="🛋️", layout="wide")
+st.set_page_config(page_title="Sagar Sofa's", page_icon="🛋️", layout="wide")
 
 # --- Load images dynamically ---
 image_folder = "images"  # make sure images folder exists with sofa1.jpg, sofa2.jpg, etc.
@@ -118,7 +118,7 @@ main{{padding-bottom:60px;}}
 </head>
 <body>
 <div class="navbar" id="navbar">
-<h1>🛋️ Sagar Sofa's 3D</h1>
+<h1>🛋️ Sagar Sofa's</h1>
 <div class="nav-links">
   <a href="#home">Home</a>
   <a href="#collections">Collections</a>

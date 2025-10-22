@@ -1,9 +1,13 @@
+Awesome! Let’s make your showroom even more interactive with scroll-triggered card animations. When a card enters the viewport, it will gently pop up with a light reflection, making the user feel like the furniture is “appearing” in 3D.
+
+Here’s the upgraded version:
+
 import streamlit as st
 from streamlit.components.v1 import html
 
 st.set_page_config(page_title="Sagar Sofa's 3D Showroom", page_icon="🛋️", layout="wide")
 
-# --- Static image URLs from GitHub ---
+# --- Static image URLs ---
 sofa1_url = "https://raw.githubusercontent.com/username/repo/main/images/sofa1.jpg"
 sofa2_url = "https://raw.githubusercontent.com/username/repo/main/images/sofa2.jpg"
 table_url = "https://raw.githubusercontent.com/username/repo/main/images/table.jpg"
@@ -24,7 +28,7 @@ showroom_page = f'''
     --accent:#000;
     --bg-color:#fff;
     --text-color:#111;
-    --card-shadow: rgba(0,0,0,0.3);
+    --card-shadow: rgba(0,0,0,0.25);
 }}
 body {{
     font-family:'Poppins',sans-serif;
@@ -75,17 +79,41 @@ body {{
 
 /* Grid Cards */
 .grid {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:30px; margin-top:40px; perspective:1200px; }}
-.card {{ background:white; padding:20px; border-radius:16px; box-shadow:0 10px 20px var(--card-shadow); text-align:center; transition: transform 0.5s ease, box-shadow 0.5s ease; transform-style: preserve-3d; }}
-.card img {{ width:100%; height:auto; border-radius:12px; transition: transform 0.5s ease; transform-style: preserve-3d; }}
+.card {{
+    background:white; padding:20px; border-radius:16px; box-shadow:0 15px 25px var(--card-shadow);
+    text-align:center; transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease; transform-style: preserve-3d;
+    position:relative; overflow:hidden;
+    opacity:0; transform: translateY(50px);
+}}
+.card.show {{
+    opacity:1; transform: translateY(0); transition: all 0.7s ease-out;
+}}
+.card img {{ width:100%; height:auto; border-radius:12px; transition: transform 0.3s ease; transform-style: preserve-3d; }}
 .card h3, .card p {{ transform:translateZ(20px); }}
 .card button {{ margin-top:12px; padding:10px 18px; background: var(--accent); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:500; transition: background 0.3s; }}
 .card button:hover {{ background:#555; }}
+
+/* Highlight effect */
+.card::before {{
+    content:'';
+    position:absolute; top:0; left:0; width:100%; height:100%;
+    pointer-events:none;
+    background: radial-gradient(circle at var(--mouse-x,50%) var(--mouse-y,50%), rgba(255,255,255,0.15) 0%, transparent 80%);
+    transition: background 0.2s ease;
+    border-radius:16px;
+}}
 
 /* Footer */
 .footer {{ text-align:center; padding:40px; font-size:0.9em; color:#666; background:#fff; border-top:1px solid #eee; margin-top:50px; }}
 
 /* Mobile */
-@media(max-width:768px){{.nav-links{{display:none;}}.hamburger{{display:flex;}}.hero h1{{font-size:1.6rem;}}.section h2{{font-size:1.5rem;}}}}
+@media(max-width:768px) {{
+    .nav-links{{display:none;}}
+    .hamburger{{display:flex;}}
+    .hero h1{{font-size:1.6rem;}}
+    .section h2{{font-size:1.5rem;}}
+    .grid {{ gap:20px; }}
+}}
 main{{padding-bottom:60px;}}
 </style>
 </head>
@@ -185,15 +213,32 @@ document.addEventListener('DOMContentLoaded', function(){{
     const y = (window.innerHeight/2 - e.pageY)/25;
     hero.style.transform = `rotateY(${x}deg) rotateX(${y}deg) scale(1.03)`;
   }});
-  hero.addEventListener('mouseleave', ()=> hero.style.transform='rotateY(0deg) rotateX
   hero.addEventListener('mouseleave', ()=> hero.style.transform='rotateY(0deg) rotateX(0deg) scale(1)');
 
-}});
-</script>
+  // 3D hover effect with light reflection for cards
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {{
+    card.addEventListener('mousemove', e => {{
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left - rect.width/2)/15;
+      const y = (e.clientY - rect.top - rect.height/2)/15;
+      card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg) scale(1.05)`;
+      card.style.setProperty('--mouse-x', ((e.clientX - rect.left)/rect.width*100)+'%');
+      card.style.setProperty('--mouse-y', ((e.clientY - rect.top)/rect.height*100)+'%');
+    }});
+    card.addEventListener('mouseleave', () => {{
+      card.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
+      card.style.setProperty('--mouse-x','50%');
+      card.style.setProperty('--mouse-y','50%');
+    }});
+  }});
 
-</body>
-</html>
-'''
+  // Scroll-triggered card pop-up animation
+  const observer = new IntersectionObserver(entries => {{
+    entries.forEach(entry => {{
+      if(entry.isIntersecting){{
+        entry.target.classList.add('show');
+      }}
+    }});
+  }},
 
-# --- Render HTML in Streamlit ---
-html(showroom_page, height=3000)
